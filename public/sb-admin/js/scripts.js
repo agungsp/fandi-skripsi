@@ -19,4 +19,10 @@
         e.preventDefault();
         $("body").toggleClass("sb-sidenav-toggled");
     });
+
+    // Toggle the side navigation
+    $("#sidebarToggle2").on("click", function(e) {
+        e.preventDefault();
+        $("body").toggleClass("sb-sidenav-toggled");
+    });
 })(jQuery);
