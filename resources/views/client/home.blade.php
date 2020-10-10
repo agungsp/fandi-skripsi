@@ -13,7 +13,7 @@
 {{-- TITLE --}}
 @section('title', '')
 
-{{-- CONTENT --}}
+{{-- CONTENT TITLE --}}
 @section('content-title')
 
 @endsection

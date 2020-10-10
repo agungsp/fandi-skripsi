@@ -35,15 +35,21 @@
                         </div>
                         <hr>
                         <div class="nav">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ route('transaksi') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-list-ol"></i></div>
                                 Transaksi
                             </a>
                         </div>
                         <div class="nav">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ route('analisa') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-pie"></i></div>
                                 Analisa
+                            </a>
+                        </div>
+                        <div class="nav">
+                            <a class="nav-link" href="{{ route('pengaturan') }}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
+                                Pengaturan
                             </a>
                         </div>
                     </div>
@@ -61,7 +67,7 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h4 class="mt-3">@yield('title-content')Title</h4>
+                        <h4 class="mt-3">@yield('title-content')</h4>
                         <hr>
                         @yield('content')
                     </div>
