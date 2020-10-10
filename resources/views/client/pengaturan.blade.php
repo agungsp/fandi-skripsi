@@ -157,6 +157,30 @@
             $('body').on('change', '#avatar', function() {
                 readURL(this);
             });
+
+            $('body').on('mousedown', '#btn_old_password', function() {
+                $('#old_password').prop('type', 'text');
+            });
+
+            $('body').on('mouseup', '#btn_old_password', function() {
+                $('#old_password').prop('type', 'password');
+            });
+
+            $('body').on('mousedown', '#btn_new_password', function() {
+                $('#new_password').prop('type', 'text');
+            });
+
+            $('body').on('mouseup', '#btn_new_password', function() {
+                $('#new_password').prop('type', 'password');
+            });
+
+            $('body').on('mousedown', '#btn_confirm_new_password', function() {
+                $('#confirm_new_password').prop('type', 'text');
+            });
+
+            $('body').on('mouseup', '#btn_confirm_new_password', function() {
+                $('#confirm_new_password').prop('type', 'password');
+            });
         });
     </script>
 @endsection
