@@ -13,17 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/ui', function () {
-    return view('client.home');
-})->name('home');
-
-Route::get('/transaksi', [App\Http\Controllers\TransaksiController::class, 'index'])->name('transaksi');
-Route::get('/analisa', [App\Http\Controllers\AnalisaController::class, 'index'])->name('analisa');
-Route::get('/pengaturan', [App\Http\Controllers\PengaturanController::class, 'index'])->name('pengaturan');
+Route::middleware(['auth', 'firstSetup'])->group(function () {
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/transaksi', [App\Http\Controllers\TransaksiController::class, 'index'])->name('transaksi');
+    Route::get('/analisa', [App\Http\Controllers\AnalisaController::class, 'index'])->name('analisa');
+    Route::get('/pengaturan', [App\Http\Controllers\PengaturanController::class, 'index'])->name('pengaturan');
+    Route::post('/pengaturan', [App\Http\Controllers\PengaturanController::class, 'store'])->name('pengaturan.store');
+    Route::post('/pengaturan/changePassword', [App\Http\Controllers\PengaturanController::class, 'changePassword'])->name('pengaturan.changePassword');
+});

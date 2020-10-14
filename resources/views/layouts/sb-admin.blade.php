@@ -25,12 +25,12 @@
                     <div class="sb-sidenav-menu" style="overflow-x: hidden;">
                         <div class="row mt-3">
                             <div class="col d-flex justify-content-center">
-                                <img src="https://api.adorable.io/avatars/96/abott@adorable.png" alt="avatar" class="img-thumbnail rounded-circle" style="max-width: 70px;">
+                                <img src="{{ asset(Auth::user()->avatar) }}" alt="avatar" class="img-thumbnail rounded-circle" style="max-width: 70px;">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col d-flex justify-content-center">
-                                <span>Username</span>
+                                <span>{{ Auth::user()->username }}</span>
                             </div>
                         </div>
                         <hr>

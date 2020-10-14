@@ -11,12 +11,10 @@
 @endsection
 
 {{-- TITLE --}}
-@section('title', '')
+@section('title', 'Beranda')
 
 {{-- CONTENT TITLE --}}
-@section('content-title')
-
-@endsection
+@section('title-content', 'Beranda')
 
 {{-- CONTENT --}}
 @section('content')
