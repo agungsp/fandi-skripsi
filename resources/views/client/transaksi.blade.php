@@ -70,7 +70,7 @@
                     <div class="list-group-item">
                         <div class="row">
                             <div class="col-xl-10 col-lg-9 col-md-8 col-sm-8">
-                                <span class="align-middle">{{ $file->created_at }} | {{ $file->fileName }}</span>
+                                <span class="align-middle">{{ $file->created_at }} | {{ $file->name }}</span>
                             </div>
                             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">
                                 <div class="row">
@@ -78,19 +78,18 @@
                                         <a href="#" class="text-secondary align-middle" role="button"><i class="fas fa-cog"></i></a>
                                     </div>
                                     <div class="col">
-                                        @if ($file->calculated)
-                                            <button class="btn btn-success btn-sm btn-block rounded-pill" type="button">
+                                        <button id="btnCalculate" class="btn btn-{{ $file->calculated ? 'success' : 'primary' }} btn-sm btn-block rounded-pill" type="button" value="{{ $file->id }}">
+                                            <div id="sucMode" class="{{ $file->calculated ? '' : 'd-none' }}">
                                                 <i class="fas fa-check-circle"></i> Selesai
-                                            </button>
-                                        @else
-                                            <button class="btn btn-primary btn-sm btn-block rounded-pill" type="button">
+                                            </div>
+                                            <div id="calMode" class="{{ $file->calculated ? 'd-none' : '' }}">
                                                 <i class="fas fa-calculator"></i> Hitung
-                                            </button>
-                                            {{-- <button class="btn btn-primary btn-sm btn-block rounded-pill" type="button" disabled>
+                                            </div>
+                                            <div id="procMode" class="d-none">
                                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                                 Proses
-                                            </button> --}}
-                                        @endif
+                                            </div>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -111,6 +110,48 @@
 @section('js')
     <script src="{{ asset('js/bs-custom-file-input.js') }}"></script>
     <script>
+        function switchBtnMode(mode) {
+            $('#btnCalculate').attr('disabled', true);
+            $('#btnCalculate').removeClass('btn-primary');
+            $('#btnCalculate').removeClass('btn-success');
+            $('#calMode').addClass('d-none');
+            $('#procMode').addClass('d-none');
+            $('#sucMode').addClass('d-none');
+            switch (mode) {
+                case 'suc':
+                    $('#btnCalculate').attr('disabled', true);
+                    $('#btnCalculate').addClass('btn-success');
+                    $('#sucMode').removeClass('d-none');
+                    break;
+                case 'cal':
+                    $('#btnCalculate').attr('disabled', false);
+                    $('#btnCalculate').addClass('btn-primary');
+                    $('#calMode').removeClass('d-none');
+                    break;
+                case 'proc':
+                    $('#btnCalculate').attr('disabled', true);
+                    $('#btnCalculate').addClass('btn-primary');
+                    $('#procMode').removeClass('d-none');
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $('body').on('click', '#btnCalculate', () => {
+            switchBtnMode('proc');
+            let file_id = $('#btnCalculate').attr('value');
+            $.ajax({
+                type   : "POST",
+                url    : "{{ route('transaksi.calculate') }}",
+                data   : {'file_id': file_id},
+                success: (response) => {
+                    console.log(response);
+                    switchBtnMode('suc');
+                }
+            });
+        });
+
         $(document).ready(() => {
             bsCustomFileInput.init();
         });
