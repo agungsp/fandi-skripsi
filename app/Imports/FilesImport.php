@@ -38,8 +38,5 @@ class FilesImport implements ToCollection
             }
             $row_num++;
         }
-
-        // PROSES APRIORI BELUM DI SINI | BELUM DIMASUKKAN
-
     }
 }

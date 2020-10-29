@@ -114,7 +114,7 @@
                 <div class="modal-body">
                     <form id="formSetting">
                         @csrf
-                        <input type="hidden" name="file_id" id="file_id">
+                        <input type="hidden" name="file_id" id="file_id" value="">
                         <div class="form-group">
                             <label for="confidence" class="d-flex justify-content-between">
                                 Confidence
@@ -227,9 +227,9 @@
             });
         });
 
-        $('body').on('click', '#btnSetting', () => {
+        $('body').on('click', '#btnSetting', function () {
             switchBtnMode('cal', true);
-            let file_id = $('#btnSetting').attr('value');
+            let file_id = $(this).attr('value');
             $.get('{{ route('transaksi') }}/'+file_id+'/getSetting', (response) => {
                 $('#modalSettingTitle').html(response.name)
                 $('#file_id').val(response.id);
@@ -253,7 +253,7 @@
                     if (response) {
                         setTimeout(() => {
                             location.reload();
-                        }, 1500);
+                        }, 1000);
                     }
                 }
             });

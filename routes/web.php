@@ -29,6 +29,7 @@ Route::middleware(['auth', 'firstSetup'])->group(function () {
 
 
     Route::get('/analisa', [App\Http\Controllers\AnalisaController::class, 'index'])->name('analisa');
+    Route::get('/analisa/{file_name}/view', [App\Http\Controllers\AnalisaController::class, 'view'])->name('analisa.view');
 
 
     Route::get('/pengaturan', [App\Http\Controllers\PengaturanController::class, 'index'])->name('pengaturan');

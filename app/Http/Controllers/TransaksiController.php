@@ -9,6 +9,9 @@ use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use App\Imports\FilesImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Helpers\AprioriHelper;
+use App\Models\Result;
+use App\Jobs\RunAprioriProcess;
 
 class TransaksiController extends Controller
 {
@@ -41,7 +44,10 @@ class TransaksiController extends Controller
     public function calculate(Request $request)
     {
         $file = File::find($request->file_id);
-        Excel::import(new FilesImport($request->file_id), public_path('excelFiles/'.$file->name));
+        Excel::import(new FilesImport($file->id), public_path('excelFiles/'.$file->name));
+        dispatch(
+            new RunAprioriProcess($file->id)
+        )->afterResponse();
         $file->calculated = true;
         $file->save();
         $file->refresh();
@@ -57,6 +63,7 @@ class TransaksiController extends Controller
     public function setSetting(Request $request)
     {
         Transaction::where('file_id', $request->file_id)->delete();
+        Result::where('file_id', $request->file_id)->delete();
         return File::find($request->file_id)->update([
             'confidence' => $request->confidence,
             'support'    => $request->support,

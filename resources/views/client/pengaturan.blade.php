@@ -46,7 +46,7 @@
                         <div class="row">
                             <div class="col d-flex justify-content-center">
                                 <label for="avatar" role="button">
-                                    <img src="{{ asset(Auth::user()->avatar) }}" alt="avatar" id="avatar_view" class="img-thumbnail rounded-circle" width="100">
+                                    <img src="{{ asset(Auth::user()->avatar) }}" alt="avatar" id="avatar_view" class="img-thumbnail rounded-circle" width="100" height="100">
                                 </label>
                                 <input type="file" class="d-none" name="avatar" id="avatar" accept="image/*">
                             </div>

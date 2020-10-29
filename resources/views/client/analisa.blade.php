@@ -21,26 +21,22 @@
     <div class="card mb-3 shadow">
         <div class="card-body" style="max-height: 480px; overflow-y: auto;">
             <div class="list-group list-group-flush p-1">
-                @for ($i = 0; $i < 20; $i++)
+                @foreach ($files as $file)
                     <div class="list-group-item">
                         <div class="row">
                             <div class="col-xl-10 col-lg-9 col-md-8 col-sm-8">
-                                <span class="align-middle">{{ now()->subHours($i) }} | excel-file-{{ $i+1 }}.xlsx</span>
+                                <span class="align-middle">{{ $file->created_at }} | {{ $file->name }}</span>
                             </div>
                             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">
-                                <div class="row">
-                                    <div class="col">
-                                        @if ($i == 1)
-                                            <button class="btn btn-success btn-sm btn-block rounded-pill" type="button">
-                                                <i class="fas fa-eye"></i> Lihat
-                                            </button>
-                                        @endif
-                                    </div>
-                                </div>
+                                @if ($file->calculated)
+                                    <a href="{{ route('analisa.view', $file->name) }}" target="_blank" class="btn btn-outline-danger btn-sm btn-block rounded-pill">
+                                        <i class="fas fa-file-pdf"></i> Export
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>
-                @endfor
+                @endforeach
             </div>
         </div>
     </div>
