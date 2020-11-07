@@ -133,7 +133,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="reset" id="btnCancel" class="btn btn-outline-secondary rounded-pill btn-sm" data-dismiss="modal">Batal</button>
-                    <button id="btnSave" class="btn btn-sm btn-primary rounded-pill" type="button" value="{{ $file->id }}">
+                    <button id="btnSave" class="btn btn-sm btn-primary rounded-pill" type="button" value="">
                         <div id="sucSettingMode" class="">
                             <i class="fas fa-check-circle"></i> Selesai
                         </div>
@@ -233,6 +233,7 @@
             $.get('{{ route('transaksi') }}/'+file_id+'/getSetting', (response) => {
                 $('#modalSettingTitle').html(response.name)
                 $('#file_id').val(response.id);
+                $('#btnSave').attr('value', response.id);
                 $('#confidence').val(response.confidence);
                 $('#confidence_value').html(response.confidence);
                 $('#support').val(response.support);

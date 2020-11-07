@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\File;
-use App\Models\Result;
-use PDF;
+use App\Exports\ResultExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AnalisaController extends Controller
 {
@@ -17,8 +17,7 @@ class AnalisaController extends Controller
 
     public function view($file_name)
     {
-        $file = File::where('name', $file_name)->first();
-        $results = Result::where('file_id', $file->id)->limit(10)->get();
-        return view('pdf.analisa', compact('file', 'results'));
+        $file    = File::where('name', $file_name)->first();
+        return Excel::download(new ResultExport($file), 'Apriori Result ' . now()->format('Ymd_his') .'.xlsx');
     }
 }

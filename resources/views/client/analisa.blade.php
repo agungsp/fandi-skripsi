@@ -21,6 +21,9 @@
     <div class="card mb-3 shadow">
         <div class="card-body" style="max-height: 480px; overflow-y: auto;">
             <div class="list-group list-group-flush p-1">
+                @if (count($files) == 0)
+                    File not exist.
+                @endif
                 @foreach ($files as $file)
                     <div class="list-group-item">
                         <div class="row">
@@ -29,8 +32,8 @@
                             </div>
                             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">
                                 @if ($file->calculated)
-                                    <a href="{{ route('analisa.view', $file->name) }}" target="_blank" class="btn btn-outline-danger btn-sm btn-block rounded-pill">
-                                        <i class="fas fa-file-pdf"></i> Export
+                                    <a href="{{ route('analisa.view', $file->name) }}" class="btn btn-outline-success btn-sm btn-block rounded-pill">
+                                        <i class="fas fa-file-excel"></i> Export
                                     </a>
                                 @endif
                             </div>
