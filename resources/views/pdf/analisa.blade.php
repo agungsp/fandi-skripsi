@@ -9,8 +9,8 @@
 
 {{-- CONTENT --}}
 @section('content')
-    <table class="" style="">
-        <thead class="">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
             <tr>
                 <th>Antecedent</th>
                 <th>Consequent</th>

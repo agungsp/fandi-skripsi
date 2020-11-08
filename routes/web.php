@@ -29,7 +29,8 @@ Route::middleware(['auth', 'firstSetup'])->group(function () {
 
 
     Route::get('/analisa', [App\Http\Controllers\AnalisaController::class, 'index'])->name('analisa');
-    Route::get('/analisa/{file_name}/view', [App\Http\Controllers\AnalisaController::class, 'view'])->name('analisa.view');
+    Route::get('/analisa/{file_name}/toExcel', [App\Http\Controllers\AnalisaController::class, 'toExcel'])->name('analisa.toExcel');
+    Route::get('/analisa/{file_name}/toPdf', [App\Http\Controllers\AnalisaController::class, 'toPdf'])->name('analisa.toPdf');
 
 
     Route::get('/pengaturan', [App\Http\Controllers\PengaturanController::class, 'index'])->name('pengaturan');

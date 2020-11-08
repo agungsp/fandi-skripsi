@@ -7,7 +7,15 @@
 
 {{-- CSS --}}
 @section('css')
+    <style>
+        .btn-excel {
+            border-radius: 30px 0px 0px 30px;
+        }
 
+        .btn-pdf {
+            border-radius: 0px 30px 30px 0px;
+        }
+    </style>
 @endsection
 
 {{-- TITLE --}}
@@ -32,9 +40,14 @@
                             </div>
                             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">
                                 @if ($file->calculated)
-                                    <a href="{{ route('analisa.view', $file->name) }}" class="btn btn-outline-success btn-sm btn-block rounded-pill">
-                                        <i class="fas fa-file-excel"></i> Export
-                                    </a>
+                                    <div class="btn-group btn-block" role="group" aria-label="Basic example">
+                                        <a href="{{ route('analisa.toExcel', $file->name) }}" class="btn btn-outline-success btn-sm btn-excel">
+                                            <i class="fas fa-file-excel"></i> Excel
+                                        </a>
+                                        <a href="{{ route('analisa.toPdf', $file->name) }}" class="btn btn-outline-danger btn-sm btn-pdf">
+                                            <i class="fas fa-file-pdf"></i> PDF
+                                        </a>
+                                    </div>
                                 @endif
                             </div>
                         </div>
