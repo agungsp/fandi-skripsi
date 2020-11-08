@@ -16,7 +16,7 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" href="{{ route('home') }}">{{ env('APP_NAME', 'Laravel') }}</a>
+            <a class="navbar-brand" href="{{ route('home') }}">Laravel Apriori</a>
             <button class="btn btn-link btn-sm d-none d-lg-block text-light" id="sidebarToggle" role="button"><i class="fas fa-bars"></i></button>
             <button class="btn btn-link btn-sm d-block d-lg-none ml-auto text-light" id="sidebarToggle2" role="button"><i class="fas fa-bars"></i></button>
         </nav>
@@ -76,7 +76,7 @@
                 <footer class="py-2 mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-center small">
-                            <div>Copyright &copy; {{ env('APP_NAME', 'Laravel') }} {{ date('Y') }}</div>
+                            <div>Copyright &copy; Laravel Apriori {{ date('Y') }}</div>
                         </div>
                     </div>
                 </footer>
