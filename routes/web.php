@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
-Route::middleware(['auth', 'firstSetup'])->group(function () {
+Route::middleware(['auth', 'role', 'firstSetup'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/transaksi', [App\Http\Controllers\TransaksiController::class, 'index'])->name('transaksi');
     Route::post('/transaksi/upload', [App\Http\Controllers\TransaksiController::class, 'upload'])->name('transaksi.upload');

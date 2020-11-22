@@ -35,12 +35,14 @@
                             </div>
                         </div>
                         <hr>
-                        <div class="nav">
-                            <a class="nav-link" href="{{ route('transaksi') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-list-ol"></i></div>
-                                Transaksi
-                            </a>
-                        </div>
+                        @if (Auth::user()->role == 'admin')
+                            <div class="nav">
+                                <a class="nav-link" href="{{ route('transaksi') }}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-list-ol"></i></div>
+                                    Transaksi
+                                </a>
+                            </div>
+                        @endif
                         <div class="nav">
                             <a class="nav-link" href="{{ route('analisa') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-pie"></i></div>

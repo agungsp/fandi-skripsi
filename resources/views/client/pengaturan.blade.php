@@ -63,20 +63,23 @@
                                     </span>
                                 </div>
                                 <hr>
-                                <div class="form-group">
+
+                                <div class="form-group {{ Auth::user()->role == 'manager' ? 'd-none' : '' }}">
                                     <label for="confidence" class="d-flex justify-content-between">
                                         Confidence
                                         <span id="confidence_value"></span>
                                     </label>
                                     <input type="range" min="0" max="100" value="{{ $setting->confidence }}" step="1" name="confidence" id="confidence" class="form-control">
                                 </div>
-                                <div class="form-group">
+
+                                <div class="form-group {{ Auth::user()->role == 'manager' ? 'd-none' : '' }}">
                                     <label for="support" class="d-flex justify-content-between">
                                         Support
                                         <span id="support_value"></span>
                                     </label>
                                     <input type="range" min="0" max="100" value="{{ $setting->support }}" step="1" name="support" id="support" class="form-control">
                                 </div>
+
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary rounded-pill btn-block">
                                         <i class="fas fa-save"></i> Simpan
