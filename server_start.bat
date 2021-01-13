@@ -2,4 +2,4 @@
 title Server Run!
 echo Server is running...
 echo press Ctrl+C to stop!
-php artisan serve --port 80
+php artisan serve
