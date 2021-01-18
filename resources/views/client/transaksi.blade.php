@@ -75,22 +75,19 @@
                             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">
                                 <div class="row">
                                     <div class="col-auto">
-                                        <a href="#" id="btnSetting" class="text-secondary align-middle" role="button" value="{{ $file->id }}">
+                                        <a href="#" id="btnSetting" class="text-secondary align-middle {{ $file->imported ? '' : 'd-none' }}" role="button" value="{{ $file->id }}">
                                             <i class="fas fa-cog"></i>
                                         </a>
                                     </div>
                                     <div class="col">
-                                        <button id="btnCalculate" class="btn btn-{{ $file->calculated ? 'success' : 'primary' }} btn-sm btn-block rounded-pill" {{ $file->calculated ? 'disabled' : '' }} type="button" value="{{ $file->id }}">
-                                            <div id="sucMode" class="{{ $file->calculated ? '' : 'd-none' }}">
-                                                <i class="fas fa-check-circle"></i> Selesai
-                                            </div>
-                                            <div id="calMode" class="{{ $file->calculated ? 'd-none' : '' }}">
+                                        <button id="btnCalculate" class="btn btn{{ $file->imported ? '' : '-outline'  }}-{{ $file->calculated ? 'success' : 'primary' }} btn-sm btn-block rounded-pill" {{ $file->calculated ? 'disabled' : '' }} type="button" value="{{ $file->id }}" data-imported="{{ $file->imported }}" data-calculated="{{ $file->calculated }}">
+                                            @if (!$file->imported && !$file->calculated)
+                                                <i class="fas fa-file-import"></i> Import
+                                            @elseif ($file->imported && !$file->calculated)
                                                 <i class="fas fa-calculator"></i> Hitung
-                                            </div>
-                                            <div id="procMode" class="d-none">
-                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                Proses
-                                            </div>
+                                            @elseif ($file->imported && $file->calculated)
+                                                <i class="fas fa-check-circle"></i> Selesai
+                                            @endif
                                         </button>
                                     </div>
                                 </div>
@@ -155,6 +152,11 @@
 @section('js')
     <script src="{{ asset('js/bs-custom-file-input.js') }}"></script>
     <script>
+        const htmlImport   = '<i class="fas fa-file-import"></i> Import';
+        const htmlProccess = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Proses';
+        const htmlHitung   = '<i class="fas fa-calculator"></i> Hitung';
+        const htmlSelesi   = '<i class="fas fa-check-circle"></i> Selesai';
+
         function switchBtnMode(mode, isSetting = false) {
             if (isSetting) {
                 $('#btnSave').attr('disabled', true);
@@ -172,6 +174,7 @@
                 $('#procMode').addClass('d-none');
                 $('#sucMode').addClass('d-none');
             }
+
             switch (mode) {
                 case 'suc':
                     if (isSetting) {
@@ -214,15 +217,38 @@
             }
         }
 
-        $('body').on('click', '#btnCalculate', () => {
-            switchBtnMode('proc');
-            let file_id = $('#btnCalculate').attr('value');
+        $('body').on('click', '#btnCalculate', function () {
+            let button          = $(this);
+            button.html(htmlProccess);
+            button.attr('disabled', true);
+            let file_id         = button.attr('value');
+            let data_imported   = button.attr('data-imported');
+            let data_calculated = button.attr('data-calculated');
+            let url             = '';
+            let buttonHtml      = '';
+            let buttonToggleClass = '';
+            let buttonDisabled = false;
+
+            if (data_imported == 0 && data_calculated == 0) {
+                url        = "{{ route('transaksi.import') }}";
+                buttonHtml = htmlHitung;
+                buttonToggleClass = 'btn-outline-primary btn-primary';
+            }
+            else if (data_imported == 1 && data_calculated == 0) {
+                url        = "{{ route('transaksi.calculate') }}";
+                buttonHtml = htmlSelesi;
+                buttonToggleClass = 'btn-primary btn-success';
+                buttonDisabled = true;
+            }
+
             $.ajax({
                 type   : "POST",
-                url    : "{{ route('transaksi.calculate') }}",
+                url    : url,
                 data   : {'file_id': file_id},
                 success: (response) => {
-                    switchBtnMode('suc');
+                    button.toggleClass(buttonToggleClass);
+                    button.html(buttonHtml);
+                    button.attr('disabled', buttonDisabled);
                 }
             });
         });

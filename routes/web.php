@@ -23,6 +23,7 @@ Route::middleware(['auth', 'role', 'firstSetup'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/transaksi', [App\Http\Controllers\TransaksiController::class, 'index'])->name('transaksi');
     Route::post('/transaksi/upload', [App\Http\Controllers\TransaksiController::class, 'upload'])->name('transaksi.upload');
+    Route::post('/transaksi/import', [App\Http\Controllers\TransaksiController::class, 'import'])->name('transaksi.import');
     Route::post('/transaksi/calculate', [App\Http\Controllers\TransaksiController::class, 'calculate'])->name('transaksi.calculate');
     Route::get('/transaksi/{file_id}/getSetting', [App\Http\Controllers\TransaksiController::class, 'getSetting'])->name('transaksi.getSetting');
     Route::post('/transaksi/setSetting', [App\Http\Controllers\TransaksiController::class, 'setSetting'])->name('transaksi.setSetting');
@@ -37,3 +38,5 @@ Route::middleware(['auth', 'role', 'firstSetup'])->group(function () {
     Route::post('/pengaturan', [App\Http\Controllers\PengaturanController::class, 'store'])->name('pengaturan.store');
     Route::post('/pengaturan/changePassword', [App\Http\Controllers\PengaturanController::class, 'changePassword'])->name('pengaturan.changePassword');
 });
+
+Route::get('sandbox', [App\Http\Controllers\TesterController::class, 'index']);
