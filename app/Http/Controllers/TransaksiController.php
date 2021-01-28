@@ -51,14 +51,16 @@ class TransaksiController extends Controller
 
     public function calculate(Request $request)
     {
+        ini_set('max_execution_time', 0);
         $file = File::find($request->file_id);
-        dispatch(
-            new RunAprioriProcess($file->id)
-        )->afterResponse();
-        $file->calculated = true;
-        $file->save();
-        $file->refresh();
-        return $file->calculated;
+
+        // DEPRECATED
+        // dispatch(
+        //     new RunAprioriProcess($file->id)
+        // )->afterResponse();
+
+        AprioriHelper::run($file->id, $file->support, $file->confidence);
+        return true;
     }
 
     public function getSetting($file_id)
@@ -75,5 +77,15 @@ class TransaksiController extends Controller
             'support'    => $request->support,
             'calculated' => false,
         ]);
+    }
+
+    public function deleteFile(Request $request)
+    {
+        $file = File::find($request->file_id_to_delete);
+        $filename = $file->name;
+        Transaction::where('file_id', $file->id)->delete();
+        Result::where('file_id',$file->id)->delete();
+        $file->delete();
+        return redirect(route('transaksi'))->with('status', "File \"$filename\" has been deleted.");
     }
 }

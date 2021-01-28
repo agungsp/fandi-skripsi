@@ -75,7 +75,7 @@
                             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">
                                 <div class="row">
                                     <div class="col-auto">
-                                        <a href="#" id="btnSetting" class="text-secondary align-middle {{ $file->imported ? '' : 'd-none' }}" role="button" value="{{ $file->id }}">
+                                        <a href="#" id="btnSetting" class="text-secondary align-middle" role="button" value="{{ $file->id }}">
                                             <i class="fas fa-cog"></i>
                                         </a>
                                     </div>
@@ -108,43 +108,80 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalSettingTitle"></h5>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="modalSettingBody">
                     <form id="formSetting">
                         @csrf
                         <input type="hidden" name="file_id" id="file_id" value="">
                         <div class="form-group">
                             <label for="confidence" class="d-flex justify-content-between">
                                 Confidence
-                                <span id="confidence_value"></span>
+                                <input type="number" class="form-control text-right"
+                                       name="confidence_value" id="confidence_value"
+                                       style="width: 120px; height: 30px;" value="{{ $setting->confidence }}"
+                                       min="0.000001" max="100"
+                                       step="0.000001" onchange="changeCSNumValue('confidence')">
                             </label>
-                            <input type="range" min="0" max="100" value="" step="1" name="confidence" id="confidence" class="form-control">
+                            <input type="range" min="0.000001"
+                                   max="100" value="{{ $setting->confidence }}"
+                                   step="0.000001" name="confidence"
+                                   id="confidence" class="form-control"
+                                   oninput="changeCSRangeValue('confidence')" required>
                         </div>
                         <div class="form-group">
                             <label for="support" class="d-flex justify-content-between">
                                 Support
-                                <span id="support_value"></span>
+                                <input type="number" class="form-control text-right"
+                                       name="support_value" id="support_value"
+                                       style="width: 120px; height: 30px;" value="{{ $setting->support }}"
+                                       min="0.000001" max="100"
+                                       step="0.000001" onchange="changeCSNumValue('support')">
                             </label>
-                            <input type="range" min="0" max="100" value="" step="1" name="support" id="support" class="form-control">
+                            <input type="range" min="0.000001"
+                                   max="100" value="{{ $setting->support }}"
+                                   step="0.000001" name="support"
+                                   id="support" class="form-control"
+                                   oninput="changeCSRangeValue('support')" required>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="reset" id="btnCancel" class="btn btn-outline-secondary rounded-pill btn-sm" data-dismiss="modal">Batal</button>
-                    <button id="btnSave" class="btn btn-sm btn-primary rounded-pill" type="button" value="">
-                        <div id="sucSettingMode" class="">
-                            <i class="fas fa-check-circle"></i> Selesai
-                        </div>
-                        <div id="calSettingMode" class="">
-                            <i class="fas fa-save"></i> Simpan
-                        </div>
-                        <div id="procSettingMode" class="d-none">
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            Proses
-                        </div>
+                <div class="modal-footer d-flex justify-content-between" id="modalSettingFooter">
+                    <button id="btnDeleteFile" class="btn btn-danger rounded-pill btn-sm" data-file="">
+                        <i class="fas fa-trash-alt"></i> Hapus
                     </button>
+
+                    <div>
+                        <button type="reset" id="btnCancel" class="btn btn-outline-secondary rounded-pill btn-sm" data-dismiss="modal">Batal</button>
+                        <button id="btnSave" class="btn btn-sm btn-primary rounded-pill" type="button" value="">
+                            <div id="sucSettingMode" class="">
+                                <i class="fas fa-check-circle"></i> Selesai
+                            </div>
+                            <div id="calSettingMode" class="">
+                                <i class="fas fa-save"></i> Simpan
+                            </div>
+                            <div id="procSettingMode" class="d-none">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Proses
+                            </div>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="modalDeleteBody" class="d-none">
+        <p>This file will be deleted. Are you sure?</p>
+    </div>
+
+    <div id="modalDeleteFooter" class="d-none">
+        <button type="button" class="btn btn-outline-secondary rounded-pill btn-sm" onclick="location.reload();">Batal</button>
+        <form id="formDeleteFile" action="{{ route('transaksi.deleteFile') }}" method="post">
+            @csrf
+            <input type="hidden" name="file_id_to_delete" id="file_id_to_delete">
+            <button type="submit" class="btn btn-sm btn-danger rounded-pill" type="button">
+                Hapus
+            </button>
+        </form>
     </div>
 @endsection
 
@@ -217,6 +254,18 @@
             }
         }
 
+        function changeCSNumValue(elem) {
+            $('#' + elem).val(
+                $('#' + elem + '_value').val()
+            );
+        }
+
+        function changeCSRangeValue(elem) {
+            $('#' + elem + '_value').val(
+                $('#' + elem).val()
+            );
+        }
+
         $('body').on('click', '#btnCalculate', function () {
             let button          = $(this);
             button.html(htmlProccess);
@@ -227,18 +276,23 @@
             let url             = '';
             let buttonHtml      = '';
             let buttonToggleClass = '';
-            let buttonDisabled = false;
+            let buttonDisabled    = false;
+            let is_imported       = false;
+            let is_calculated     = false;
 
             if (data_imported == 0 && data_calculated == 0) {
-                url        = "{{ route('transaksi.import') }}";
-                buttonHtml = htmlHitung;
+                url               = "{{ route('transaksi.import') }}";
+                buttonHtml        = htmlHitung;
                 buttonToggleClass = 'btn-outline-primary btn-primary';
+                is_imported       = true;
             }
             else if (data_imported == 1 && data_calculated == 0) {
-                url        = "{{ route('transaksi.calculate') }}";
-                buttonHtml = htmlSelesi;
+                url               = "{{ route('transaksi.calculate') }}";
+                buttonHtml        = htmlSelesi;
                 buttonToggleClass = 'btn-primary btn-success';
-                buttonDisabled = true;
+                buttonDisabled    = true;
+                is_imported       = true;
+                is_calculated     = true;
             }
 
             $.ajax({
@@ -249,6 +303,8 @@
                     button.toggleClass(buttonToggleClass);
                     button.html(buttonHtml);
                     button.attr('disabled', buttonDisabled);
+                    button.attr('data-imported', is_imported ? 1 : 0);
+                    button.attr('data-calculated', is_calculated ? 1 : 0);
                 }
             });
         });
@@ -259,11 +315,12 @@
             $.get('{{ route('transaksi') }}/'+file_id+'/getSetting', (response) => {
                 $('#modalSettingTitle').html(response.name)
                 $('#file_id').val(response.id);
+                $('#btnDeleteFile').attr('data-file', response.id);
                 $('#btnSave').attr('value', response.id);
                 $('#confidence').val(response.confidence);
-                $('#confidence_value').html(response.confidence);
+                $('#confidence_value').val(response.confidence);
                 $('#support').val(response.support);
-                $('#support_value').html(response.support);
+                $('#support_value').val(response.support);
                 $('#modalSetting').modal('show');
             });
         });
@@ -286,23 +343,24 @@
             });
         });
 
+        $('body').on('click', '#btnDeleteFile', function () {
+            let file_id = $(this).attr('data-file');
+            $('#modalSettingBody').html(
+                $('#modalDeleteBody').html()
+            );
+            $('#modalSettingFooter').html(
+                $('#modalDeleteFooter').html()
+            );
+            $('#file_id_to_delete').val(file_id);
+        });
+
         $(document).ready(() => {
             bsCustomFileInput.init();
 
             let confidence_value = $('#confidence').val();
             let support_value    = $('#support').val();
-            $('#confidence_value').html(confidence_value);
-            $('#support_value').html(support_value);
-
-            $('body').on('input', '#confidence', function() {
-                let value = $('#confidence').val();
-                $('#confidence_value').html(value);
-            });
-
-            $('body').on('input', '#support', function() {
-                let value = $('#support').val();
-                $('#support_value').html(value);
-            });
+            $('#confidence_value').val(confidence_value);
+            $('#support_value').val(support_value);
         });
     </script>
 @endsection

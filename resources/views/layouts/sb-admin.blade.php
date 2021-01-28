@@ -70,7 +70,12 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h4 class="mt-3">@yield('title-content')</h4>
+                        <div class="form-inline d-flex justify-content-between">
+                            <h4 class="mt-3">@yield('title-content')</h4>
+                            <div>
+                                @yield('right-title-content')
+                            </div>
+                        </div>
                         <hr>
                         @yield('content')
                     </div>

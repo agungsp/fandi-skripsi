@@ -27,9 +27,15 @@ Route::middleware(['auth', 'role', 'firstSetup'])->group(function () {
     Route::post('/transaksi/calculate', [App\Http\Controllers\TransaksiController::class, 'calculate'])->name('transaksi.calculate');
     Route::get('/transaksi/{file_id}/getSetting', [App\Http\Controllers\TransaksiController::class, 'getSetting'])->name('transaksi.getSetting');
     Route::post('/transaksi/setSetting', [App\Http\Controllers\TransaksiController::class, 'setSetting'])->name('transaksi.setSetting');
+    Route::post('/transaksi/deleteFile', [App\Http\Controllers\TransaksiController::class, 'deleteFile'])->name('transaksi.deleteFile');
 
 
     Route::get('/analisa', [App\Http\Controllers\AnalisaController::class, 'index'])->name('analisa');
+    Route::get('/analisa/{file_id}/details', [App\Http\Controllers\AnalisaController::class, 'details'])->name('analisa.details');
+    Route::get('/analisa/{file_id}/rules', [App\Http\Controllers\AnalisaController::class, 'rules'])->name('analisa.rules');
+    Route::get('/analisa/{file_id}/{combination_count}/itemsetCombine', [App\Http\Controllers\AnalisaController::class, 'itemsetCombine'])->name('analisa.itemsetCombine');
+    Route::get('/analisa/{file_id}/associationRule', [App\Http\Controllers\AnalisaController::class, 'associationRule'])->name('analisa.associationRule');
+    Route::get('/analisa/{file_id}/finalResult', [App\Http\Controllers\AnalisaController::class, 'finalResult'])->name('analisa.finalResult');
     Route::get('/analisa/{file_name}/toExcel', [App\Http\Controllers\AnalisaController::class, 'toExcel'])->name('analisa.toExcel');
     Route::get('/analisa/{file_name}/toPdf', [App\Http\Controllers\AnalisaController::class, 'toPdf'])->name('analisa.toPdf');
 
