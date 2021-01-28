@@ -31,7 +31,7 @@ class PengaturanController extends Controller
 
         Setting::find(Auth::id())->update([
             'confidence' => $request->confidence,
-            'support' => $request->support,
+            'support'    => $request->support,
         ]);
 
         return redirect()->route('pengaturan')->with('status', 'Data updated successfully.');

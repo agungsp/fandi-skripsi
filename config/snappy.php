@@ -32,12 +32,12 @@ return [
     |    The environment variables to set while running the wkhtmltopdf process.
     |
     */
-    'binary'  => '/usr/local/bin/wkhtmltopdf-amd64',
-    // 'binary' => '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"',
+    // 'binary'  => '/usr/local/bin/wkhtmltopdf-amd64',
+    'binary' => '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"',
 
     'pdf' => [
         'enabled' => true,
-        'binary'  => env('WKHTML_PDF_BINARY', '/usr/local/bin/wkhtmltopdf'),
+        'binary'  => env('WKHTML_PDF_BINARY', '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"'),
         'timeout' => false,
         'options' => [],
         'env'     => [],

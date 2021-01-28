@@ -7,24 +7,35 @@ use Phpml\Association\Apriori;
 use App\Models\Transaction;
 use App\Models\File;
 use App\Models\Result;
+use Illuminate\Support\Facades\Cache;
 
 
 class AprioriHelper {
 
-    public static function run($file_id)
+    public static function run($file_id, $support, $confidence)
     {
-        $row_count = count(Transaction::where('file_id', $file_id)->groupBy('row_num')->pluck('row_num'));
-        $rows      = [];
         $labels    = [];
-        for ($i = 1; $i <= $row_count; $i++) {
-            $row = Transaction::where('file_id', $file_id)->where('row_num', $i)->pluck('item')->toArray();
-            array_push($rows, $row);
-        }
 
-        $file    = File::find($file_id);
-        $apriori = new Apriori($file->support/100, $file->confidence/100);
-        $apriori->train($rows, $labels);
-        $rules = $apriori->getRules();
+        // Caching
+        $keyCache = 'file_id:'.$file_id;
+        if (!Cache::has($keyCache)) {
+            $row_count = count(Transaction::where('file_id', $file_id)->groupBy('row_num')->pluck('row_num'));
+            $rows      = [];
+            for ($i = 1; $i <= $row_count; $i++) {
+                $row = Transaction::where('file_id', $file_id)->where('row_num', $i)->pluck('itemset_code')->toArray();
+                array_push($rows, $row);
+            }
+            Cache::forever($keyCache, $rows);
+        }
+        $dataCache = Cache::get($keyCache);
+
+        // Apriori Proccess
+        $apriori = new Apriori($support, $confidence);
+        $apriori->train($dataCache, $labels);
+        dd($apriori->apriori());
+        // HASIL
+        // =================================
+        $rules = $apriori->getRules();// MIN 0,001 : 0,5
 
         foreach ($rules as $rule) {
             Result::create([
@@ -35,5 +46,7 @@ class AprioriHelper {
                 'confidence' => $rule['confidence'],
             ]);
         }
+
+        File::find($file_id)->update(['calculated' => true]);
     }
 }

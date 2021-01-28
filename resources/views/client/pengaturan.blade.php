@@ -67,17 +67,33 @@
                                 <div class="form-group {{ Auth::user()->role == 'manager' ? 'd-none' : '' }}">
                                     <label for="confidence" class="d-flex justify-content-between">
                                         Confidence
-                                        <span id="confidence_value"></span>
+                                        <input type="number" class="form-control text-right"
+                                               name="confidence_value" id="confidence_value"
+                                               style="width: 120px; height: 30px;" value="{{ $setting->confidence }}"
+                                               min="0.000001" max="100"
+                                               step="0.000001" onchange="changeCSNumValue('confidence')">
                                     </label>
-                                    <input type="range" min="0" max="100" value="{{ $setting->confidence }}" step="1" name="confidence" id="confidence" class="form-control">
+                                    <input type="range" min="0.000001"
+                                           max="100" value="{{ $setting->confidence }}"
+                                           step="0.000001" name="confidence"
+                                           id="confidence" class="form-control"
+                                           oninput="changeCSRangeValue('confidence')" required>
                                 </div>
 
                                 <div class="form-group {{ Auth::user()->role == 'manager' ? 'd-none' : '' }}">
                                     <label for="support" class="d-flex justify-content-between">
                                         Support
-                                        <span id="support_value"></span>
+                                        <input type="number" class="form-control text-right"
+                                               name="support_value" id="support_value"
+                                               style="width: 120px; height: 30px;" value="{{ $setting->support }}"
+                                               min="0.000001" max="100"
+                                               step="0.000001" onchange="changeCSNumValue('support')">
                                     </label>
-                                    <input type="range" min="0" max="100" value="{{ $setting->support }}" step="1" name="support" id="support" class="form-control">
+                                    <input type="range" min="0.000001"
+                                           max="100" value="{{ $setting->support }}"
+                                           step="0.000001" name="support"
+                                           id="support" class="form-control"
+                                           oninput="changeCSRangeValue('support')" required>
                                 </div>
 
                                 <div class="form-group">
@@ -166,21 +182,33 @@
             }
         }
 
+        function changeCSNumValue(elem) {
+            $('#' + elem).val(
+                $('#' + elem + '_value').val()
+            );
+        }
+
+        function changeCSRangeValue(elem) {
+            $('#' + elem + '_value').val(
+                $('#' + elem).val()
+            );
+        }
+
         $(document).ready(function() {
             let confidence_value = $('#confidence').val();
             let support_value = $('#support').val();
             $('#confidence_value').html(confidence_value);
             $('#support_value').html(support_value);
 
-            $('body').on('input', '#confidence', function() {
-                let value = $('#confidence').val();
-                $('#confidence_value').html(value);
-            });
+            // $('body').on('input', '#confidence', function() {
+            //     let value = $('#confidence').val();
+            //     $('#confidence_value').html(value);
+            // });
 
-            $('body').on('input', '#support', function() {
-                let value = $('#support').val();
-                $('#support_value').html(value);
-            });
+            // $('body').on('input', '#support', function() {
+            //     let value = $('#support').val();
+            //     $('#support_value').html(value);
+            // });
 
             $('body').on('change', '#avatar', function() {
                 readURL(this);
