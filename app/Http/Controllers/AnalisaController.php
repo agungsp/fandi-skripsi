@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Cache;
 
 class AnalisaController extends Controller
 {
+    function __construct(){
+        ini_set('max_execution_time', 0);
+    }
+
     public function index()
     {
         $files = File::orderBy('created_at', 'desc')->get();
@@ -153,7 +157,7 @@ class AnalisaController extends Controller
     public function toPdf($file_name)
     {
         $file = File::where('name', $file_name)->first();
-        $data  = Result::where('file_id', $file->id)->get();
+        $data  = Result::where('file_id', $file->id)->limit(10000)->get();
         $rules = collect();
         foreach ($data as $row) {
             if ($row->consequent >= $file->consequent) {

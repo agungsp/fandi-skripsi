@@ -53,13 +53,8 @@ class TransaksiController extends Controller
     {
         ini_set('max_execution_time', 0);
         $file = File::find($request->file_id);
-
-        // DEPRECATED
-        // dispatch(
-        //     new RunAprioriProcess($file->id)
-        // )->afterResponse();
-
         AprioriHelper::run($file->id, $file->support, $file->confidence);
+        $file->update(['calculated' => true]);
         return true;
     }
 

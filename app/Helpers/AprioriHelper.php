@@ -32,7 +32,7 @@ class AprioriHelper {
         // Apriori Proccess
         $apriori = new Apriori($support, $confidence);
         $apriori->train($dataCache, $labels);
-        dd($apriori->apriori());
+        // dd($apriori->apriori());
         // HASIL
         // =================================
         $rules = $apriori->getRules();// MIN 0,001 : 0,5
@@ -47,6 +47,6 @@ class AprioriHelper {
             ]);
         }
 
-        File::find($file_id)->update(['calculated' => true]);
+        return true;
     }
 }

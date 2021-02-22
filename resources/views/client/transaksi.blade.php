@@ -91,6 +91,11 @@
                                         </button>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col">
+                                        elapsed: <span id="counter_{{ $file->id }}">0</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -188,6 +193,7 @@
 {{-- JS --}}
 @section('js')
     <script src="{{ asset('js/bs-custom-file-input.js') }}"></script>
+    <script src="{{ asset('js/humanize-duration.js') }}"></script>
     <script>
         const htmlImport   = '<i class="fas fa-file-import"></i> Import';
         const htmlProccess = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Proses';
@@ -279,6 +285,7 @@
             let buttonDisabled    = false;
             let is_imported       = false;
             let is_calculated     = false;
+            let exec_time = 0;
 
             if (data_imported == 0 && data_calculated == 0) {
                 url               = "{{ route('transaksi.import') }}";
@@ -295,6 +302,12 @@
                 is_calculated     = true;
             }
 
+            this.addInterval = setInterval(() => {
+                exec_time += 1000;
+                $('#counter_'+file_id).html(humanizeDuration(exec_time));
+            }, 1000);
+
+
             $.ajax({
                 type   : "POST",
                 url    : url,
@@ -305,6 +318,7 @@
                     button.attr('disabled', buttonDisabled);
                     button.attr('data-imported', is_imported ? 1 : 0);
                     button.attr('data-calculated', is_calculated ? 1 : 0);
+                    clearInterval(this.addInterval);
                 }
             });
         });

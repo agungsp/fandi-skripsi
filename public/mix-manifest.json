@@ -3,5 +3,5 @@
     "/css/app.css": "/css/app.css",
     "/js/jquery.min.js": "/js/jquery.min.js",
     "/js/bs-custom-file-input.js": "/js/bs-custom-file-input.js",
-    "/datatables/datatables.net-dt": "/datatables/datatables.net-dt"
+    "/js/humanize-duration.js": "/js/humanize-duration.js"
 }

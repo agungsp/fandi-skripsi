@@ -9,7 +9,7 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('DataTables/datatables.css') }}">
     <style>
-        .btn-excel {
+        .btn-view {
             border-radius: 30px 0px 0px 30px;
         }
 
@@ -41,11 +41,21 @@
                             </div>
                             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">
                                 @if ($file->calculated)
-                                    <a href="{{ route('analisa.details', $file->id) }}"
-                                       class="btn btn-block btn-outline-primary btn-sm rounded-pill"
-                                       target="_blank">
-                                        <i class="fas fa-eye"></i> View Details
-                                    </a>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a href="{{ route('analisa.details', $file->id) }}"
+                                           class="btn btn-outline-primary btn-sm btn-view"
+                                           target="_blank">
+
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                        <a href="{{ route('analisa.toPdf', $file->name) }}"
+                                           class="btn btn-danger btn-sm btn-pdf">
+
+                                            <i class="fas fa-file-pdf"></i> Export
+                                        </a>
+                                    </div>
+
+
                                     {{-- <div class="btn-group btn-block" role="group" aria-label="Basic example">
                                         <a href="{{ route('analisa.toExcel', $file->name) }}" class="btn btn-outline-success btn-sm btn-excel">
                                             <i class="fas fa-file-excel"></i> Excel
