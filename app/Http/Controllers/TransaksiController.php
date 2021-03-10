@@ -68,8 +68,8 @@ class TransaksiController extends Controller
     {
         Result::where('file_id', $request->file_id)->delete();
         return File::find($request->file_id)->update([
-            'confidence' => $request->confidence,
-            'support'    => $request->support,
+            'confidence' => $request->confidence / 100,
+            'support'    => $request->support / 100,
             'calculated' => false,
         ]);
     }

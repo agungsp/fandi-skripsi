@@ -22,8 +22,8 @@ class firstSetup
         if (empty($setting)) {
             Setting::create([
                 'user_id'    => Auth::user()->id,
-                'confidence' => 50,
-                'support'    => 50,
+                'confidence' => 50 / 100,
+                'support'    => 50 / 100,
             ]);
         }
         return $next($request);

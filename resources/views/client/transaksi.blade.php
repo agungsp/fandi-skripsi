@@ -37,7 +37,7 @@
             <div class="row">
                 <div class="col">
                     <span class="small">
-                        Input file penjualan | Confidence: {{ $setting->confidence }}% | Support: {{ $setting->support }}%
+                        Input file penjualan | Confidence: {{ $setting->confidence * 100 }}% | Support: {{ $setting->support * 100 }}%
                     </span>
                 </div>
             </div>
@@ -122,13 +122,13 @@
                                 Confidence
                                 <input type="number" class="form-control text-right"
                                        name="confidence_value" id="confidence_value"
-                                       style="width: 120px; height: 30px;" value="{{ $setting->confidence }}"
-                                       min="0.000001" max="100"
-                                       step="0.000001" onchange="changeCSNumValue('confidence')">
+                                       style="width: 120px; height: 30px;" value="{{ $setting->confidence * 100 }}"
+                                       min="0" max="100"
+                                       step="1" onchange="changeCSNumValue('confidence')">
                             </label>
-                            <input type="range" min="0.000001"
-                                   max="100" value="{{ $setting->confidence }}"
-                                   step="0.000001" name="confidence"
+                            <input type="range" min="0"
+                                   max="100" value="{{ $setting->confidence * 100 }}"
+                                   step="1" name="confidence"
                                    id="confidence" class="form-control"
                                    oninput="changeCSRangeValue('confidence')" required>
                         </div>
@@ -137,13 +137,13 @@
                                 Support
                                 <input type="number" class="form-control text-right"
                                        name="support_value" id="support_value"
-                                       style="width: 120px; height: 30px;" value="{{ $setting->support }}"
-                                       min="0.000001" max="100"
-                                       step="0.000001" onchange="changeCSNumValue('support')">
+                                       style="width: 120px; height: 30px;" value="{{ $setting->support * 100 }}"
+                                       min="0" max="100"
+                                       step="1" onchange="changeCSNumValue('support')">
                             </label>
-                            <input type="range" min="0.000001"
-                                   max="100" value="{{ $setting->support }}"
-                                   step="0.000001" name="support"
+                            <input type="range" min="0"
+                                   max="100" value="{{ $setting->support * 100 }}"
+                                   step="1" name="support"
                                    id="support" class="form-control"
                                    oninput="changeCSRangeValue('support')" required>
                         </div>
@@ -331,10 +331,10 @@
                 $('#file_id').val(response.id);
                 $('#btnDeleteFile').attr('data-file', response.id);
                 $('#btnSave').attr('value', response.id);
-                $('#confidence').val(response.confidence);
-                $('#confidence_value').val(response.confidence);
-                $('#support').val(response.support);
-                $('#support_value').val(response.support);
+                $('#confidence').val(response.confidence * 100);
+                $('#confidence_value').val(response.confidence * 100);
+                $('#support').val(response.support * 100);
+                $('#support_value').val(response.support * 100);
                 $('#modalSetting').modal('show');
             });
         });

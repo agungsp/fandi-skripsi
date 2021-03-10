@@ -69,13 +69,13 @@
                                         Confidence
                                         <input type="number" class="form-control text-right"
                                                name="confidence_value" id="confidence_value"
-                                               style="width: 120px; height: 30px;" value="{{ $setting->confidence }}"
-                                               min="0.000001" max="100"
-                                               step="0.000001" onchange="changeCSNumValue('confidence')">
+                                               style="width: 120px; height: 30px;" value="{{ $setting->confidence * 100 }}"
+                                               min="0" max="100"
+                                               step="1" onchange="changeCSNumValue('confidence')">
                                     </label>
-                                    <input type="range" min="0.000001"
-                                           max="100" value="{{ $setting->confidence }}"
-                                           step="0.000001" name="confidence"
+                                    <input type="range" min="0"
+                                           max="100" value="{{ $setting->confidence * 100 }}"
+                                           step="1" name="confidence"
                                            id="confidence" class="form-control"
                                            oninput="changeCSRangeValue('confidence')" required>
                                 </div>
@@ -85,13 +85,13 @@
                                         Support
                                         <input type="number" class="form-control text-right"
                                                name="support_value" id="support_value"
-                                               style="width: 120px; height: 30px;" value="{{ $setting->support }}"
-                                               min="0.000001" max="100"
-                                               step="0.000001" onchange="changeCSNumValue('support')">
+                                               style="width: 120px; height: 30px;" value="{{ $setting->support * 100 }}"
+                                               min="0" max="100"
+                                               step="1" onchange="changeCSNumValue('support')">
                                     </label>
-                                    <input type="range" min="0.000001"
-                                           max="100" value="{{ $setting->support }}"
-                                           step="0.000001" name="support"
+                                    <input type="range" min="0"
+                                           max="100" value="{{ $setting->support * 100 }}"
+                                           step="1" name="support"
                                            id="support" class="form-control"
                                            oninput="changeCSRangeValue('support')" required>
                                 </div>
